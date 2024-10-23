@@ -2,6 +2,9 @@
 
 	include '../components/connect.php';
 
+	$warning_msg = [];
+	$success_msg = [];
+
 	if (isset($_POST['register'])) {
 		$id = unique_id();
 
@@ -17,34 +20,39 @@
 		$cpass = sha1($_POST['cpass']);
 		$cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
-		$image =$_FILES['image']['name'];
-		$image =filter_var($image, FILTER_SANITIZE_STRING);
+		$image = $_FILES['image']['name'];
+		$image = filter_var($image, FILTER_SANITIZE_STRING);
 		$ext = pathinfo($image, PATHINFO_EXTENSION);
 		$rename = unique_id().'.'.$ext;
 		$image_size = $_FILES['image']['size'];
-		$image_tmp_name = $_FILES['image']['tmp_name']
-		$image folder = '../uploaded files'.$rename;
+		$image_tmp_name = $_FILES['image']['tmp_name'];
+		$image_folder = '../uploaded_files/'.$rename;
 
-		$select_admin = $conn->prepare("SELECT * FROM 'admin' WHERE email = ?");
+		$select_admin = $conn->prepare("SELECT * FROM `admin` WHERE email = ?");
+		$select_admin->execute([$email]);
 
 		if($select_admin->rowCount() > 0){
-			$warning_msg[] = 'email already taken!';
+			$warning_msg[] = 'Email already taken!';
 		}else{
 			if($pass != $cpass) {
-				$warning_msg[] = 'confirm password not matched';
+				$warning_msg[] = 'Confirm password does not match!';
 			}
 			else{
-				$insert_admin = $conn->prepare("INSERT INTO 'admin'(id, name, email, password, image) VALUES(?,?,?,?,?)");
-				$insert_admin->execute([$id, $name, $cpass, $rename]);
+				$insert_admin = $conn->prepare("INSERT INTO `admin`(id, name, email, password, image) VALUES(?, ?, ?, ?, ?)");
+				$insert_admin->execute([$id, $name, $email, $pass, $rename]); // use $pass instead of $cpass
 
-				move_uploaded_file($image_tmp_name, $image_folder);
-
-				$success_msg[] = 'new admin registered! please login now'
+				// Ensure file upload
+				if(move_uploaded_file($image_tmp_name, $image_folder)){
+					$success_msg[] = 'New admin registered! Please login now.';
+				} else {
+					$warning_msg[] = 'File upload failed. Please try again.';
+				}
 			}
 		}
 	}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,8 +63,7 @@
 
 	<!-- font awesome cdn link -->
 	<link rel="stylesheet" href="https://cdnjs.cloudeflare.com/ajax/libs/font-awesome/6.2.0.css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/admin_style.css?v=<?php echo "time"; ?>"
-	>
+	<link rel="stylesheet" type="text/css" href="../css/admin_style.css?v=<?php echo "time"; ?>">
 </head>
 <body style="padding-left: 0;">
 <!-- register section starts -->
@@ -64,6 +71,25 @@
 <div class="form-container form">
 	<form action="" method="post" enctype="multipart/form-data" class="register">
 		<h3>register now</h3>
+
+		<!-- Display warning messages -->
+		<?php if(!empty($warning_msg)): ?>
+			<div class="alert alert-warning">
+				<?php foreach($warning_msg as $msg): ?>
+					<p><?php echo $msg; ?></p>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
+
+		<!-- Display success messages -->
+		<?php if(!empty($success_msg)): ?>
+			<div class="alert alert-success">
+				<?php foreach($success_msg as $msg): ?>
+					<p><?php echo $msg; ?></p>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
+
 		<div class="flex">
 			<div class="col">
 				<p>your name <span>*</span></p>
@@ -88,12 +114,10 @@
 	</form>
 </div>	
 
-
 <!-- register section ends -->
 
-
 <!-- sweetalert cdn link -->
-	<script src="https://cdnjs.cloudeflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 	<!-- custom js link -->
 	<script type="text/javascript" src="../js/admin_script.js"></script>
