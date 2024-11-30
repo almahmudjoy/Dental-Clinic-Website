@@ -15,7 +15,7 @@ if (isset($_COOKIE['admin_id'])) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DentiCare - Dental Clinic Website Template</title>
+    <title>DentiCare - Dental Clinic Website</title>
 
     <!-- Font Awesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -57,7 +57,7 @@ if (isset($_COOKIE['admin_id'])) {
                     ?>
                     <h3><?= $num_of_services; ?></h3>
                     <p>View services</p>
-                    <a href="view_services.php" class="btn">View Services</a>
+                    <a href="view_service.php" class="btn">View Service</a>
                 </div>
 				<div class="box">
                     <?php
@@ -67,7 +67,7 @@ if (isset($_COOKIE['admin_id'])) {
                     ?>
                     <h3><?= $num_of_active_services; ?></h3>
                     <p>View active services</p>
-                    <a href="view_services.php" class="btn">View active Services</a>
+                    <a href="view_active_services.php" class="btn">View active Services</a>
                 </div>
 				<div class="box">
                     <?php
@@ -77,7 +77,7 @@ if (isset($_COOKIE['admin_id'])) {
                     ?>
                     <h3><?= $num_of_deactive_services; ?></h3>
                     <p>View deactive services</p>
-                    <a href="view_services.php" class="btn">View deactive Services</a>
+                    <a href="view_deactivated_services.php" class="btn">View deactive Services</a>
                 </div>
 				<div class="box">
                     <?php
@@ -91,7 +91,7 @@ if (isset($_COOKIE['admin_id'])) {
                 </div>
 				<div class="box">
                     <?php
-                    $select_appointments = $conn->prepare("SELECT * FROM `appointment`");
+                    $select_appointments = $conn->prepare("SELECT * FROM `appointments`");
                     $select_appointments->execute();
                     $num_of_appointments = $select_appointments->rowCount();
                     ?>
@@ -101,7 +101,7 @@ if (isset($_COOKIE['admin_id'])) {
                 </div>
 				<div class="box">
                 <?php
-                     $select_canceled_appointments = $conn->prepare("SELECT * FROM `appointment` WHERE status = ?");
+                     $select_canceled_appointments = $conn->prepare("SELECT * FROM `appointments` WHERE status = ?");
                      $select_canceled_appointments->execute(['canceled']);
                      $num_of_canceled_appointments = $select_canceled_appointments->rowCount();
                       ?>

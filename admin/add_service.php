@@ -49,7 +49,7 @@ if (isset($_POST['publish'])) {
     if ($select_image->rowCount() > 0 && $image != '') {
         $warning_msg[] = 'Please rename your image.';
     } else {
-        $insert_service = $conn->prepare("INSERT INTO `services`(id, name, price, image, service_detail, status) VALUES (?, ?, ?, ?, ?, ?)");
+        $insert_service = $conn->prepare("INSERT INTO `services`(id, name, price, image, service_details, status) VALUES (?, ?, ?, ?, ?, ?)");
         $insert_service->execute([$id, $name, $price, $image, $content, $status]);
         $success_msg[] = 'Service added successfully.';
     }
@@ -108,7 +108,7 @@ if (isset($_POST['draft'])) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DentiCare - Dental Clinic Website Template</title>
+    <title>DentiCare - Dental Clinic Website</title>
 
     <!-- Font Awesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
