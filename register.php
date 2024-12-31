@@ -47,7 +47,6 @@ if (isset($_POST['register'])) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,25 +59,24 @@ if (isset($_POST['register'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="css/user_style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-	<link rel="icon" href="../image/favicon.ico" type="image/x-icon">
-
+    <link rel="icon" href="../ddt/image/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
     <?php include 'components/user_header.php'; ?>
+
     <div class="banner">
         <div class="detail">
-            <h1>register now</h1>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing<br>
-               Lorem ipsum, dolor sit amet consectetur adipisicing</p>
-               <span><a href="home.php">Home</a><i class="bx bx-right-arrow-alt"></i>register now</span>
+            <h1>Register Now</h1>
+           
+            <span><a href="home.php">Home</a><i class="bx bx-right-arrow-alt"></i>Register Now</span>
         </div>
     </div>
 
-<!-- Register Section Starts -->
-<div class="form-container form">
-   <form action="" method="post" enctype="multipart/form-data" class="register">
-      <h3>Register Now</h3>
+    <!-- Register Section Starts -->
+    <div class="form-container form">
+        <form action="" method="post" enctype="multipart/form-data" class="register">
+            <h3>Register Now</h3>
 
             <!-- Display warning messages -->
             <?php if (!empty($warning_msg)): ?>
@@ -112,7 +110,7 @@ if (isset($_POST['register'])) {
                     <p>Confirm Password <span>*</span></p>
                     <input type="password" id="confirmPass" name="cpass" placeholder="Confirm your password" maxlength="50" required class="box">
                     <label>
-                        <input type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility('registerPass', 'confirmPass')"> Show Password
+                        <input type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility()"> Show Password
                     </label>
                 </div>
             </div>
@@ -124,18 +122,29 @@ if (isset($_POST['register'])) {
             <p class="link">Already have an account? <a href="login.php">Login now</a></p>
             <button type="submit" name="register" class="btn">Register Now</button>
         </form>
-    </div>	
+    </div>    
     <!-- Register Section Ends -->
-
 
     <?php include 'components/user_footer.php'; ?>
 
     <!-- SweetAlert CDN Link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
-    <!-- Custom JS Link -->
-    <script type="text/javascript" src="/js/user_script.js"></script>
+    <!-- Custom JS for Show Password -->
+    <script>
+        function togglePasswordVisibility() {
+            const passField = document.getElementById('registerPass');
+            const confirmPassField = document.getElementById('confirmPass');
+            const checkbox = document.getElementById('showPasswordCheckbox');
 
-    <?php include '/components/alert.php'; ?>
+            if (checkbox.checked) {
+                passField.type = 'text';
+                confirmPassField.type = 'text';
+            } else {
+                passField.type = 'password';
+                confirmPassField.type = 'password';
+            }
+        }
+    </script>
 </body>
 </html>

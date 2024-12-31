@@ -22,19 +22,23 @@ $pid = $_GET['pid'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="css/user_style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-	<link rel="icon" href="../image/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="../ddt/image/favicon.ico" type="image/x-icon">
 
 </head>
 <body>
 
     <?php include 'components/user_header.php'; ?>
     <div class="banner">
-        <div class="detail">
-            <h1>service details</h1>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing<br>
-               Lorem ipsum, dolor sit amet consectetur adipisicing</p>
-               <span><a href="home.php">Home</a><i class="bx bx-right-arrow-alt"></i>service details</span>
-        </div>
+    <div class="detail">
+        <h1>Service Details</h1>
+            <p>
+                Explore the exceptional services we offer to care for your dental needs.<br>
+                From routine cleanings to advanced treatments, your smile is our priority.
+            </p>
+        <span>
+            <a href="home.php">Home</a> <i class="bx bx-right-arrow-alt"></i> Service Details
+        </span>
+    </div>
     </div>
 
     <div class="view_container">
@@ -58,7 +62,7 @@ $pid = $_GET['pid'];
             <div class="details">
                 <p class="price">$<?= $fetch_service['price']; ?>/-</p>
                 <div class="name"><?= $fetch_service['name']; ?></div>
-                <p class="service-dtail"><?= $fetch_service['service_detail']; ?></p>
+                <p class="service-dtail"><?= $fetch_service['service_details']; ?></p>
                 <input type="hidden" name="service_id" value="<?= $fetch_service['id']; ?>">
                 <div class="flex-btn">
                     <a href="appointment.php?get_id=<?= $fetch_service['id']; ?>" class="btn" style="width: 100%;">book appointment now</a>
@@ -90,6 +94,6 @@ $pid = $_GET['pid'];
     <!-- Custom JS Link -->
     <script type="text/javascript" src="/js/user_script.js"></script>
 
-    <?php include '/components/alert.php'; ?>
+    <?php include '../ddt/components/alert.php'; ?>
 </body>
 </html>

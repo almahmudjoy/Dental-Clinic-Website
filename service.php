@@ -50,11 +50,11 @@ if (isset($_COOKIE['user_id'])) {
             if ($select_services->rowCount() > 0) {
                 while ($fetch_services = $select_services->fetch(PDO::FETCH_ASSOC)) {
             ?>
-            <div class="box">
+           <div class="box">
                 <a href="view_page.php?pid=<?= $fetch_services['id']; ?>">
                     <img src="uploaded_files/<?= $fetch_services['image']; ?>" class="image" alt="Service Image">
                 </a>
-                <p class="price">$<?= $fetch_services['price']; ?>/-</p>
+                <span class="price">$<?= $fetch_services['price']; ?>/-</span> <!-- Updated price element -->
                 <div class="content">
                     <div class="button">
                         <div><h3><?= $fetch_services['name']; ?></h3></div>
@@ -66,7 +66,7 @@ if (isset($_COOKIE['user_id'])) {
                         <a href="appointment.php?get_id=<?= $fetch_services['id']; ?>" class="btn" style="width: 100%;">Book Appointment</a>
                     </div>
                 </div>
-            </div>
+            </div>
             <?php 
                 }
             } else {
