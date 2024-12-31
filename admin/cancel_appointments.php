@@ -9,22 +9,6 @@ if (isset($_COOKIE['admin_id'])) {
     exit();
 }
 
-if (isset($_POST['delete'])) {
-    $delete_id = $_POST['delete_id'];
-    $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
-
-    $verify_delete = $conn->prepare("SELECT * FROM `appointments` WHERE id = ?");
-    $verify_delete->execute([$delete_id]);
-
-    if ($verify_delete->rowCount() > 0) {
-        $delete_appointment = $conn->prepare("DELETE FROM `appointments` WHERE id = ?");
-        $delete_appointment->execute([$delete_id]);
-
-        $success_msg[] = 'Appointment ID deleted successfully';
-    } else {
-        $warning_msg[] = 'Appointment ID already deleted or does not exist';
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +17,7 @@ if (isset($_POST['delete'])) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DentiCare - Dental Clinic Website</title>
+    <title>DentiCare - Canceled Appointments</title>
 
     <!-- Font Awesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -48,18 +32,19 @@ if (isset($_POST['delete'])) {
         
         <section class="appointment-container">
             <div class="heading">
-                <h1><img src="../image/separator.png"> Total Booked Appointments <img src="../image/separator.png"></h1>
+                <h1><img src="../image/separator.png"> Canceled Appointments <img src="../image/separator.png"></h1>
             </div>
             <div class="box-container">
                 <?php
-                $select_appointment = $conn->prepare("SELECT * FROM `appointments`");
-                $select_appointment->execute();
+                // Query to fetch only canceled appointments
+                $select_canceled_appointments = $conn->prepare("SELECT * FROM `appointments` WHERE status = 'canceled'");
+                $select_canceled_appointments->execute();
 
-                if ($select_appointment->rowCount() > 0) {
-                    while ($fetch_appointment = $select_appointment->fetch(PDO::FETCH_ASSOC)) {
+                if ($select_canceled_appointments->rowCount() > 0) {
+                    while ($fetch_appointment = $select_canceled_appointments->fetch(PDO::FETCH_ASSOC)) {
                 ?>
                 <div class="box">
-                    <div class="status" style="color: <?php echo ($fetch_appointment['status'] == 'in progress') ? 'limegreen' : 'red'; ?>">
+                    <div class="status" style="color: red;">
                         <?= $fetch_appointment['status']; ?>
                     </div>
                     <div class="detail">
@@ -69,8 +54,8 @@ if (isset($_POST['delete'])) {
                         <p>Number: <span><?= $fetch_appointment['number']; ?></span></p>
                         <p>Email: <span><?= $fetch_appointment['email']; ?></span></p>
                         <p>Time: <span><?= $fetch_appointment['time']; ?></span></p>
-                        <p>Total Price: <span><?= $fetch_appointment['total_price']; ?></span></p>
-                        <p>Appointment Status: <span><?= $fetch_appointment['status']; ?></span></p>
+                        <p>Total Price: <span>$<?= $fetch_appointment['price']; ?></span></p>
+                        <p>Payment Status: <span><?= $fetch_appointment['payment_status']; ?></span></p>
 
                         <?php
                         // Fetch Employee Data
@@ -101,7 +86,7 @@ if (isset($_POST['delete'])) {
                 <?php
                     }
                 } else {
-                    echo '<div class="empty"><p>No appointments received yet!</p></div>';
+                    echo '<div class="empty"><p>No canceled appointments found!</p></div>';
                 }
                 ?>
             </div>
